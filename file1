@@ -1,11 +1,19 @@
-import java.util.Scanner;
-class Addition  {
-    public static void main(String[]args) {
-        Scanner sc = new Scanner (System.in);
-        System.out.println("Enter first number");
-        int num1 = sc.nextInt();
-        System.out.println("Enter second number");
-        int num2 = sc.nextInt();
-        System.out.println("Sum: " + (num1 + num2));
-    }
-}
+FROM alpine:latest
+
+# Install Apache
+RUN apk update && apk add --no-cache apache2
+
+# Create required directories
+RUN mkdir -p /run/apache2
+
+# Set working directory
+WORKDIR /var/www/localhost/htdocs/
+
+# Copy index file
+COPY index.html .
+
+# Expose port
+EXPOSE 80
+
+# Start Apache in foreground
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
